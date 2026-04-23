@@ -21,9 +21,16 @@ app.post('/chat', async (req, res) => {
     }
   );
 
-  const data = await response.json();
-  const reply = data.candidates[0].content.parts[0].text;
-  res.json({ reply });
+const data = await response.json();
+  console.log(JSON.stringify(data)); // untuk debug
+  
+  if (data.candidates && data.candidates[0]) {
+    const reply = data.candidates[0].content.parts[0].text;
+    res.json({ reply });
+  } else {
+    console.log("Gemini error:", JSON.stringify(data));
+    res.json({ reply: "Maaf, aku tak faham soalan tu!" });
+  }
 });
 
 app.listen(3000, () => console.log('Server ON - port 3000'));
